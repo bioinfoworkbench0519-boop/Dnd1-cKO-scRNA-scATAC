@@ -69,11 +69,26 @@ Fig2_S2.R
 
 Main analyses:
 
-* Stage-specific UMAP visualization of Dnd1-cKO germ cells
+* Stage-specific UMAP visualization of Dnd1-cKO PGCs
 * Cell number summaries across developmental stages
 * DotPlot analyses of germ cell and pluripotency markers
 * Comparative marker expression analyses across E14.5–E17.5
 
+## Mouse Gastrulation Dataset Preprocessing
+
+Script:
+
+```text
+2_GastrulationData.R
+```
+
+Main analyses:
+
+* Download and preprocessing of MouseGastrulationData datasets
+* Conversion from SingleCellExperiment objects to Seurat objects
+* Removal of doublets and stripped cells
+* Selection of primitive streak and epiblast populations
+* Preparation of gastrulation reference datasets for integration analyses
 
 ## Figure 3 and Supplementary Figure 3
 
@@ -109,30 +124,13 @@ Main analyses:
 * Boxplot visualization of quantitative experimental results
 
 
-## Mouse Gastrulation Dataset Preprocessing
-
-Script:
-
-```text
-2_GastrulationData.R
-```
-
-Main analyses:
-
-* Download and preprocessing of MouseGastrulationData datasets
-* Conversion from SingleCellExperiment objects to Seurat objects
-* Removal of doublets and stripped cells
-* Selection of primitive streak and epiblast populations
-* Preparation of gastrulation reference datasets for integration analyses
-
-
 ## scATAC-seq Dataset Processing Pipeline
 
 Script:
 
 ```text
 3_scATAC_dataset_process.R
-````
+```
 
 Main analyses:
 
@@ -144,7 +142,7 @@ Main analyses:
 * RNA–ATAC integration
 * Peak calling using MACS2
 * Motif enrichment analysis
-* Germ cell subclustering
+* PGC subclustering
 
 Main analyses:
 
@@ -164,11 +162,11 @@ Fig5_S5.R
 
 Main analyses:
 
-* scRNA-seq analysis of E13.5–E15.5 germ cells
+* scRNA-seq analysis of E13.5–E15.5 PGCs
 * Integration of published E13.5 PGC datasets with current datasets
 * RNA velocity analysis using velocyto.R
 * Cluster composition analysis
-* DotPlot visualization of pluripotency and germ cell markers
+* DotPlot visualization of pluripotency and PGC markers
 
 Reference dataset:
 
@@ -186,33 +184,9 @@ Fig6_S6.R
 Main analyses:
 
 * scATAC-seq trajectory analysis using Monocle3
-* Pseudotime analysis of germ cell populations
+* Pseudotime analysis of PGC populations
 * RNA–ATAC integration
 * Gene score visualization
 * Motif enrichment heatmap generation
 * Cell-type annotation of scATAC-seq clusters
 * Quality control metrics for fragment counts and TSS enrichment
-
-
-# Citation
-
-If you use this code or analysis workflow, please cite:
-
-```text
-[Authors]. [Title]. [Journal]. [Year].
-```
-
-
-# Data Availability
-
-Processed datasets and associated metadata will be publicly available upon publication.
-
-Example:
-
-```text
-Single-cell RNA-seq data are available at GEO under accession number XXXXXXXX.
-```
-
-# Code Availability
-
-All analysis scripts used in this study are available in this GitHub repository.
