@@ -43,6 +43,26 @@ The analyses were performed mainly using Seurat, ArchR, and Monocle3.
 
 # Analysis Description
 
+## Mouse Fetal Testis scRNA-seq Processing and Annotation
+
+**Script:**
+
+```text
+1_scRNA dataset process and annotation_Dnd1cKO.R
+```
+
+**Main analyses:**
+
+* Processing and quality control of 10x Genomics scRNA-seq datasets
+* Doublet detection and removal using DoubletFinder
+* Filtering of residual Dnd1-expressing cells from Dnd1-cKO samples
+* Integration of multiple developmental-stage fetal testis datasets using Seurat
+* Cell type annotation of major testicular cell populations
+* Germ cell-specific subclustering and removal of somatic contaminants
+* Preparation of RNA velocity-compatible Seurat objects from loom files
+* Integration and annotation of RNA velocity datasets
+* Generation of annotated Seurat objects for downstream analyses
+
 ## Figure 1 and Supplementary Figure 1
 
 Script:
