@@ -192,139 +192,66 @@ DotPlot(
   )
 
 #========================================================
-# Figure 2e-h
-# Stage-specific DotPlots
+# Figure 2e
+# Cluster4 & 7 BarPlots
 #========================================================
 
-marker.genes.early <- c(
-  "Dazl", "Ddx4", "Piwil2",
-  "Nanog", "Lin28a", "Sox2",
-  "Tbx3", "Tfcp2l1", "Esrrb",
-  "Nodal", "Fgf5", "Otx2"
+cKO_germ$orig.ident.v3 <- paste0(
+  sub("_Dnd1-cKO", "", cKO_germ$orig.ident.v2),
+  "_",
+  Idents(cKO_germ)
 )
 
-marker.genes.late <- c(
-  marker.genes.early,
-  "Cer1", "T", "Mixl1"
+obj_sub <- subset(
+  cKO_germ,
+  idents = c(4, 7)
 )
 
-#--------------------------------------------------------
-# E14.5
-#--------------------------------------------------------
+genes <- c("Dazl","Ddx4","Piwil2","Nanog","Lin28a","Sox2","Tbx3","Tfcp2l1","Esrrb","Nodal","Fgf5","Otx2","Cer1","T","Mixl1")
 
-DotPlot(
-  E14.5,
-  features  = marker.genes.early,
-  cols      = c("blue", "red"),
-  dot.scale = 8
-) +
-  RotatedAxis() +
-  guides(
-    size = guide_legend(
-      title = "Pct.Exp",
-      order = 2
-    ),
+expr_df <- FetchData(
+  obj_sub,
+  vars = c(genes, "orig.ident.v3")
+)
 
-    color = guide_colorbar(
-      title = "Avg.Exp",
-      order = 1
-    )
-  ) +
-  theme(
-    legend.text = element_text(size = 20),
-
-    axis.title = element_blank(),
-
-    axis.text = element_text(size = 20)
+expr_long <- expr_df %>%
+  pivot_longer(
+    cols = all_of(genes),
+    names_to = "Gene",
+    values_to = "Expression"
   )
 
-#--------------------------------------------------------
-# E15.5
-#--------------------------------------------------------
+expr_long$Gene <- factor(
+  expr_long$Gene,
+  levels = c("Dazl","Ddx4","Piwil2","Nanog","Lin28a","Sox2","Tbx3","Tfcp2l1","Esrrb","Nodal","Fgf5","Otx2","Cer1","T","Mixl1")  # ←並べたい順に指定
+)
 
-DotPlot(
-  E15.5,
-  features  = marker.genes.early,
-  cols      = c("blue", "red"),
-  dot.scale = 8
-) +
-  RotatedAxis() +
-  guides(
-    size = guide_legend(
-      title = "Pct.Exp",
-      order = 2
-    ),
+expr_long$orig.ident.v3 <- factor(
+  expr_long$orig.ident.v3,
+  levels = c("E14.5_7", "E15.5_7", "E16.5_7", "E17.5_7", "E17.5_4")
+)
 
-    color = guide_colorbar(
-      title = "Avg.Exp",
-      order = 1
-    )
+make_plot <- function(gene_name){
+
+  ggplot(
+    filter(expr_long, Gene == gene_name),
+    aes(x = orig.ident.v3, y = Expression, fill = orig.ident.v3)
   ) +
-  theme(
-    legend.text = element_text(size = 20),
-
-    axis.title = element_blank(),
-
-    axis.text = element_text(size = 20)
-  )
-
-#--------------------------------------------------------
-# E16.5
-#--------------------------------------------------------
-
-DotPlot(
-  E16.5,
-  features  = marker.genes.early,
-  cols      = c("blue", "red"),
-  dot.scale = 8,
-  scale.max = 100
-) +
-  RotatedAxis() +
-  guides(
-    size = guide_legend(
-      title = "Pct.Exp",
-      order = 2
-    ),
-
-    color = guide_colorbar(
-      title = "Avg.Exp",
-      order = 1
+    geom_boxplot(outlier.size = 0.3) +
+    theme_bw() +
+    labs(title = gene_name, x = NULL, y = "Normalized Expression") +
+    scale_fill_manual(values = c("#F8766D","#53B400","#00C094","#DB72FB","#DB72FB")) +
+    theme(
+      legend.position = "none",
+      plot.title = element_text(face = "bold.italic", size = 16, hjust = 0.5),
+      strip.text = element_text(face = "italic", size = 14),
+      axis.text.x = element_text(size = 14),
+      axis.text.y = element_text(size = 14)
     )
-  ) +
-  theme(
-    legend.text = element_text(size = 20),
+}
 
-    axis.title = element_blank(),
+plots <- lapply(levels(expr_long$Gene), make_plot)
 
-    axis.text = element_text(size = 20)
-  )
-
-#--------------------------------------------------------
-# E17.5
-#--------------------------------------------------------
-
-DotPlot(
-  E17.5,
-  features  = marker.genes.late,
-  cols      = c("blue", "red"),
-  dot.scale = 8
-) +
-  RotatedAxis() +
-  guides(
-    size = guide_legend(
-      title = "Pct.Exp",
-      order = 2
-    ),
-
-    color = guide_colorbar(
-      title = "Avg.Exp",
-      order = 1
-    )
-  ) +
-  theme(
-    legend.text = element_text(size = 20),
-
-    axis.title = element_blank(),
-
-    axis.text = element_text(size = 20)
-  )
+tiff("cKO_germ_Marker_Boxplot.tif", width = 9600, height = 4800, res = 400)
+wrap_plots(plots, ncol = 3)
+dev.off()
